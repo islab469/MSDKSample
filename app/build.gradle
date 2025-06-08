@@ -8,7 +8,7 @@ kotlin {
 android {
 
     compileSdkVersion 35 // 建议大于等 34，因为 MSDK 已经适配 Android 14 版本
-    namespace "dji.v5.ux"
+    namespace "com.example.msdksample"
     defaultConfig {
         applicationId "com.example.msdksample"
         minSdk 24
