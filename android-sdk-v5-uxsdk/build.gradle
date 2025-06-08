@@ -1,0 +1,86 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+kotlin {
+    jvmToolchain(17)
+}
+
+android {
+    compileSdk 35
+    compileSdkVersion 35
+    namespace "dji.v5.ux"
+    resourcePrefix "uxsdk_"
+    defaultConfig {
+        minSdkVersion Integer.parseInt(project.ANDROID_MIN_SDK_VERSION)
+        targetSdkVersion Integer.parseInt(project.ANDROID_TARGET_SDK_VERSION)
+        versionCode 1
+        versionName "1.0"
+        minSdk 24
+        targetSdk 35
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions{
+        jvmTarget = JavaVersion.VERSION_1_8
+        freeCompilerArgs += ["-Xjvm-default=all"]
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+
+dependencies {
+    implementation 'androidx.annotation:annotation:1.9.1'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation deps.multidex
+    implementation deps.legacySupport
+    implementation deps.recyclerview
+    implementation deps.okio
+    implementation deps.wire
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.9.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime:2.9.1'
+    implementation 'androidx.lifecycle:lifecycle-process:2.9.1'
+    implementation deps.media
+    implementation deps.kotlinLib
+    implementation 'androidx.core:core-ktx:1.16.0'
+    implementation deps.rx3Android
+    implementation deps.wpmzSdk
+    implementation deps.rx3Kt
+    implementation deps.lottie
+    implementation deps.cardview
+    implementation deps.mikepenzCommunityMaterial
+    implementation deps.mikepenzGoogleMaterial
+    implementation deps.mikepenzIconicsViews
+    implementation deps.mikepenzIconicsCore
+    implementation deps.mikepenzIonicons
+    implementation deps.material
+    implementation 'com.dji:dji-sdk-v5-aircraft:5.14.0'
+    implementation 'com.dji:dji-sdk-v5-aircraft-provided:5.14.0'
+
+    api deps.maplibreTurf
+    api deps.maplibreSdk
+
+
+    api deps.playservicesplaces
+    api 'com.google.android.gms:play-services-maps:19.2.0'
+    api deps.playserviceslocation
+    api deps.playservicesbase
+
+    compileOnly deps.aircraftProvided
+    implementation deps.aircraft
+
+}
