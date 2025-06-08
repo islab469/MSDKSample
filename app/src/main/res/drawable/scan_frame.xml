@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- 外框 -->
+    <path
+        android:pathData="M8,8 L8,40 M8,8 L40,8 M192,8 L160,8 M192,8 L192,40 M8,192 L8,160 M8,192 L40,192 M192,192 L192,160 M192,192 L160,192"
+        android:strokeWidth="4"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round" />
+
+    <!-- 中心十字準線 -->
+    <path
+        android:pathData="M100,92 L100,108 M92,100 L108,100"
+        android:strokeWidth="2"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round" />
+
+</vector> 

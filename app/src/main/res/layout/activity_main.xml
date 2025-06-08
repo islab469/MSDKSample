@@ -1,72 +1,218 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_root"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:background="@color/background">
 
-    <SurfaceView
-        android:id="@+id/video_view"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="16dp" />
+    <!-- 視訊預覽區域 -->
+    <FrameLayout
+        android:id="@+id/preview_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/control_panel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <LinearLayout
-        android:id="@+id/button_layout"
-        android:orientation="vertical"
-        android:layout_below="@id/video_view"
+        <SurfaceView
+            android:id="@+id/video_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- 狀態指示器 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|top"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/connection_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/status_background"
+                android:contentDescription="@string/connection_status_description"
+                android:padding="8dp"
+                android:text="@string/status_disconnected"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/scan_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/status_background"
+                android:contentDescription="@string/scan_status_description"
+                android:padding="8dp"
+                android:text="@string/waiting_for_scan"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <!-- QR Code 掃描框 -->
+        <ImageView
+            android:id="@+id/scan_frame"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/scan_frame_description"
+            android:src="@drawable/scan_frame" />
+
+    </FrameLayout>
+
+    <!-- 固定的控制面板 -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/control_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="16dp">
-
-        <Button
-            android:id="@+id/btn_takeoff"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="起飛" />
-
-        <Button
-            android:id="@+id/btn_land"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="降落"
-            android:layout_marginTop="8dp" />
+        android:layout_margin="8dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp"
-            android:gravity="center">
+            android:baselineAligned="false"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <Button
-                android:id="@+id/btn_left"
-                android:layout_width="wrap_content"
+            <!-- 基本控制按鈕 -->
+            <LinearLayout
+                android:id="@+id/basic_controls"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="左轉" />
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn_forward"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="前進"
-                android:layout_marginHorizontal="8dp" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_takeoff"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/action_takeoff"
+                    app:cornerRadius="28dp" />
 
-            <Button
-                android:id="@+id/btn_right"
-                android:layout_width="wrap_content"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_land"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/action_land"
+                    app:cornerRadius="28dp" />
+
+            </LinearLayout>
+
+            <!-- 飛行控制區域 -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="右轉" />
+                android:layout_marginTop="16dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <!-- 左側高度控制 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_up"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        android:text="@string/action_up"
+                        app:cornerRadius="32dp" />
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="16dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_down"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        android:text="@string/action_down"
+                        app:cornerRadius="32dp" />
+
+                </LinearLayout>
+
+                <!-- 右側方向控制 -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_forward"
+                        android:layout_width="0dp"
+                        android:layout_height="64dp"
+                        android:text="@string/action_forward"
+                        app:cornerRadius="32dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.4" />
+
+                    <LinearLayout
+                        android:id="@+id/horizontal_controls"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="8dp"
+                        android:baselineAligned="false"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toBottomOf="@id/btn_forward">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_left"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:text="@string/action_left"
+                            app:cornerRadius="32dp" />
+
+                        <Space
+                            android:layout_width="32dp"
+                            android:layout_height="wrap_content" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_right"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:text="@string/action_right"
+                            app:cornerRadius="32dp" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_back"
+                        android:layout_width="0dp"
+                        android:layout_height="64dp"
+                        android:text="@string/action_back"
+                        app:cornerRadius="32dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/horizontal_controls"
+                        app:layout_constraintWidth_percent="0.4" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="後退"
-            android:layout_marginTop="8dp"
-            android:layout_gravity="center" />
-    </LinearLayout>
-</RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
