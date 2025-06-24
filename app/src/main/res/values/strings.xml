@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">無人機控制</string>
-    
+
     <!-- 操作按鈕 -->
     <string name="action_takeoff">起飛</string>
     <string name="action_land">降落</string>
@@ -11,7 +11,7 @@
     <string name="action_right">右轉</string>
     <string name="action_up">上升</string>
     <string name="action_down">下降</string>
-    
+
     <!-- 狀態文字 -->
     <string name="status_connected">已連接</string>
     <string name="status_disconnected">未連接</string>
@@ -22,4 +22,5 @@
     <string name="scan_frame_description">QR Code 掃描框</string>
     <string name="connection_status_description">連線狀態指示器</string>
     <string name="scan_status_description">掃描狀態指示器</string>
+    <string name="title_activity_main">主畫面</string>
 </resources>
