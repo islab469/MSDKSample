@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.SurfaceView
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.msdksample.data.TelloDroneRepository
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
-
+    private val droneRepository = TelloDroneRepository()
     private lateinit var surfaceView: SurfaceView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,30 +18,48 @@ class MainActivity : AppCompatActivity() {
 
         surfaceView = findViewById(R.id.video_view)
 
+        lifecycleScope.launch {
+            droneRepository.initialize()
+        }
+
         findViewById<Button>(R.id.btn_takeoff).setOnClickListener {
-            // TODO: 發送起飛命令
+            lifecycleScope.launch { droneRepository.sendTakeoffCommand() }
         }
 
         findViewById<Button>(R.id.btn_land).setOnClickListener {
-            // TODO: 發送降落命令
+            lifecycleScope.launch { droneRepository.sendLandCommand() }
         }
 
         findViewById<Button>(R.id.btn_forward).setOnClickListener {
-            // TODO: 發送前進命令
+            lifecycleScope.launch { droneRepository.sendForwardCommand() }
         }
 
         findViewById<Button>(R.id.btn_back).setOnClickListener {
-            // TODO: 發送後退命令
+            lifecycleScope.launch { droneRepository.sendBackCommand() }
         }
 
         findViewById<Button>(R.id.btn_left).setOnClickListener {
-            // TODO: 發送左轉命令
+            lifecycleScope.launch { droneRepository.sendLeftCommand() }
         }
 
         findViewById<Button>(R.id.btn_right).setOnClickListener {
-            // TODO: 發送右轉命令
+            lifecycleScope.launch { droneRepository.sendRightCommand() }
         }
+        // 可在此將視訊串流畫面呈現在 surfaceView，示例僅啟動串流
+    }
 
-        // TODO: 初始化 Tello 視訊串流並綁定 surfaceView
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch { droneRepository.startVideoStream() }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        lifecycleScope.launch { droneRepository.stopVideoStream() }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        lifecycleScope.launch { droneRepository.cleanup() }
     }
 }
